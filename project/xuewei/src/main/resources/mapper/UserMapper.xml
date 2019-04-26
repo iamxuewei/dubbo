@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuewei.mapper.UserMapper">
+
+    <select id="getUserByUserId" resultType="com.xuewei.vo.User" parameterType="java.lang.String">
+        SELECT * FROM  T_USER WHERE userName = #{userName}
+    </select>
+    <select id="getAllUser" resultType="com.xuewei.vo.User">
+       SELECT
+	      t.userId,
+	      t.age,
+	      t.email,
+          t.phone,
+	      t.userName,
+          CASE WHEN t.type = '0' THEN '超级管理员' WHEN t.type = '1' THEN '管理员' ELSE '用户'  END as type
+          FROM
+	      T_USER t
+    </select>
+    <select id="getAllUserBypage" resultType="com.xuewei.vo.User" parameterType="map">
+        SELECT *
+        from t_user t
+        <where>
+            <if test="userName!=null and userName!=''">
+                t.userName LIKE CONCAT('%',#{userName},'%')
+            </if>
+        </where>
+        ORDER BY t.userName
+        limit #{offset},#{limit}
+    </select>
+
+</mapper>
