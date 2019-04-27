@@ -17,41 +17,41 @@ import java.util.Set;
 @Configuration
 public class WebApplicationConfig implements WebMvcConfigurer {
 
-//    //下面的地址跳过拦截器
-//    protected static Set<String> statsdUrls = new HashSet<String>();
-//    static {
-//        statsdUrls.add("/login/validateUser/");
-//        statsdUrls.add("/login/authentication");
-//    }
-//
-//    /**
-//     * 优先所有方法执行前的方法
-//     * @param registry
-//     */
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new HandlerInterceptor() {
-//            @Override
-//            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//                if (handler instanceof HandlerMethod) {
-//                    String reqUrl = request.getServletPath();
-//                    if (statsdUrls.contains(reqUrl)) {
-//                        return true;
-//                    } else{
-//                        //获取用户登录信息
-//                        User user = (User) request.getSession().getAttribute("user");
-//                        if (user != null) {
-//                            return true;
-//                        }
-//                        //跳转到登录页面
-//                        response.sendRedirect("/login/authentication");
-//                    }
-//                }
-//                return true;
-//            }
-//
-//        });
-//
-//
-//    }
+    //下面的地址跳过拦截器
+    protected static Set<String> statsdUrls = new HashSet<String>();
+    static {
+        statsdUrls.add("/login/validateUser/");
+        statsdUrls.add("/login/authentication");
+    }
+
+    /**
+     * 优先所有方法执行前的方法
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HandlerInterceptor() {
+            @Override
+            public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+                if (handler instanceof HandlerMethod) {
+                    String reqUrl = request.getServletPath();
+                    if (statsdUrls.contains(reqUrl)) {
+                        return true;
+                    } else{
+                        //获取用户登录信息
+                        User user = (User) request.getSession().getAttribute("user");
+                        if (user != null) {
+                            return true;
+                        }
+                        //跳转到登录页面
+                        response.sendRedirect("/login/authentication");
+                    }
+                }
+                return true;
+            }
+
+        });
+
+
+    }
 }
